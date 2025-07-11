@@ -32,12 +32,25 @@ export const getStoreRatings = async (req, res) => {
         model: User,
         attributes: ['id', 'name', 'email'],
       },
+      order: [['createdAt', 'DESC']],
     });
 
-    res.json(ratings);
+    const total = ratings.reduce((sum, r) => sum + r.rating, 0);
+    const avgRating = ratings.length ? total / ratings.length : 0;
+
+    res.json({
+      averageRating: Number(avgRating.toFixed(2)),
+      ratings: ratings.map((r) => ({
+        id: r.id,
+        rating: r.rating,
+        createdAt: r.createdAt,
+        user: r.User,
+      })),
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Failed to fetch ratings' });
   }
 };
+
 

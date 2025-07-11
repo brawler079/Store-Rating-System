@@ -6,7 +6,7 @@ import { storeValidator } from '../validators/generalValidator.js';
 
 const router = express.Router();
 
-router.post('/', authenticate, authorizeRoles('admin'), storeValidator, createStore);
+router.post('/', authenticate, authorizeRoles('owner'), storeValidator, createStore);
 router.get('/', authenticate, getAllStores);
 
 export default router;

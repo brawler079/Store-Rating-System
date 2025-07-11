@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-
 import { useNavigate } from 'react-router-dom';
 
 const AdminDashboard = () => {
@@ -20,7 +19,7 @@ const AdminDashboard = () => {
       ]);
 
       setUsers(userRes.data);
-      setStores(storeRes.data);
+      setStores(storeRes.data.stores || storeRes.data); // handles both paginated or flat response
       setLoading(false);
     } catch (err) {
       console.error(err);
@@ -53,8 +52,9 @@ const AdminDashboard = () => {
         <p>Loading data...</p>
       ) : (
         <>
-          <div className="mb-8">
-            <h3 className="text-xl font-semibold text-gray-700 mb-2">Users</h3>
+          {/* Users Table */}
+          <div className="mb-10">
+            <h3 className="text-xl font-semibold text-gray-700 mb-2">All Users</h3>
             <div className="overflow-auto rounded shadow bg-white">
               <table className="w-full text-sm text-left text-gray-700">
                 <thead className="bg-gray-200">
@@ -70,7 +70,7 @@ const AdminDashboard = () => {
                     <tr key={user.id} className="border-b">
                       <td className="p-3">{user.name}</td>
                       <td className="p-3">{user.email}</td>
-                      <td className="p-3">{user.role}</td>
+                      <td className="p-3 capitalize">{user.role}</td>
                       <td className="p-3">{user.address}</td>
                     </tr>
                   ))}
@@ -79,16 +79,19 @@ const AdminDashboard = () => {
             </div>
           </div>
 
+          {/* Stores Table */}
           <div>
-            <h3 className="text-xl font-semibold text-gray-700 mb-2">Stores</h3>
+            <h3 className="text-xl font-semibold text-gray-700 mb-2">All Stores</h3>
             <div className="overflow-auto rounded shadow bg-white">
               <table className="w-full text-sm text-left text-gray-700">
                 <thead className="bg-gray-200">
                   <tr>
-                    <th className="p-3">Name</th>
+                    <th className="p-3">Store Name</th>
                     <th className="p-3">Email</th>
                     <th className="p-3">Address</th>
                     <th className="p-3">Avg. Rating</th>
+                    <th className="p-3">Total Ratings</th>
+                    <th className="p-3">Owner</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -97,7 +100,15 @@ const AdminDashboard = () => {
                       <td className="p-3">{store.name}</td>
                       <td className="p-3">{store.email}</td>
                       <td className="p-3">{store.address}</td>
-                      <td className="p-3">{store.rating?.toFixed(2) || 'N/A'}</td>
+                      <td className="p-3">
+                        {store.averageRating ? store.averageRating : 'N/A'}
+                      </td>
+                      <td className="p-3">{store.ratingsCount || 0}</td>
+                      <td className="p-3">
+                        {store.owner
+                          ? `${store.owner.name} (${store.owner.email})`
+                          : 'N/A'}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
