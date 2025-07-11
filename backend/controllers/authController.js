@@ -8,7 +8,10 @@ export const signup = async (req, res) => {
   if (!errors.isEmpty())
     return res.status(400).json({ errors: errors.array() });
 
-  const { name, email, password, address } = req.body;
+  const { name, email, password, address, role } = req.body;
+
+  const allowedRoles = ['normal', 'owner', 'admin'];
+  const finalRole = allowedRoles.includes(role) ? role : 'normal';
 
   try {
     const exists = await User.findOne({ where: { email } });
@@ -21,7 +24,7 @@ export const signup = async (req, res) => {
       email,
       password: hashedPassword,
       address,
-      role: 'normal',
+      role: finalRole,
     });
 
     res.status(201).json({ message: 'User created', userId: user.id });
@@ -30,6 +33,7 @@ export const signup = async (req, res) => {
     res.status(500).json({ message: 'Signup failed' });
   }
 };
+
 
 export const login = async (req, res) => {
   const errors = validationResult(req);

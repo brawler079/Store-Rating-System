@@ -4,6 +4,7 @@ import Signup from './pages/Signup';
 import AdminDashboard from './pages/AdminDashboard';
 import UserDashboard from './pages/UserDashboard';
 import OwnerDashboard from './pages/OwnerDashboard';
+import AddStore from './pages/AddStore';
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/user-dashboard" element={<UserDashboard />} />
         <Route path="/owner-dashboard" element={<OwnerDashboard />} />
-
+        <Route path="/admin/add-store" element={<AddStore />} />
       </Routes>
     </Router>
   );

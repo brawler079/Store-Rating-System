@@ -2,8 +2,8 @@ import { body } from 'express-validator';
 
 export const signupValidator = [
   body('name')
-    .isLength({ min: 20, max: 60 })
-    .withMessage('Name must be 20–60 characters long'),
+    .isLength({ min: 5, max: 60 })
+    .withMessage('Name must be 5–60 characters long'),
   body('email').isEmail().withMessage('Invalid email'),
   body('address')
     .isLength({ max: 400 })
